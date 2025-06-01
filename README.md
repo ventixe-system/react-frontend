@@ -1,1 +1,1 @@
-React frontend for Ventixe booking system.
+React frontend for Ventixe eventmanagement system.

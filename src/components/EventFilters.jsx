@@ -26,7 +26,7 @@ const EventFilters = ({ selectedStatus, onStatusChange, selectedCategory, onCate
       </div>
 
       {/* Category Filter Dropdown */}
-      <div>
+      <div className="ml-8">
         <select
           value={selectedCategory}
           onChange={(e) => onCategoryChange(e.target.value)}

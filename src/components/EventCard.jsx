@@ -14,7 +14,7 @@ const EventCard = ({event}) => {
           {event.date} — {event.time}
         </div>
         <h3 className="text-base font-semibold text-grey-100">{event.title}</h3>
-        <div className="text-xs text-grey-80"><i class="fa-thin fa-location-dot"></i> {event.location}</div>
+        <div className="text-xs text-grey-80"><i className="fa-thin fa-location-dot"></i> {event.location}</div>
         <div className="flex justify-end">
           <span className="text-primary-100 text-lg font-semibold">${event.price}</span>
         </div>

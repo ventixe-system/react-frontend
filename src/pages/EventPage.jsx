@@ -2,7 +2,8 @@ import EventCard from "../components/EventCard"
 import EventFilters from "../components/EventFilters";
 import React, { use } from "react"
 import { useEffect, useState } from "react";
-import Modal from "../components/Modal";
+import Modal from "../components/ModalBase";
+import AddEventForm from "../components/AddEventForm";
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -37,14 +38,14 @@ const EventPage = () => {
 
   const filteredEvents = events.filter(event => {
     return event.status === statusFilter &&
-      (categoryFilter === "All" || event.category === categoryFilter);
+      (categoryFilter === "All Categories" || event.category === categoryFilter);
   }
   );
 
   return (
     <section className="grid grid-rows-[auto_1fr] bg-grey-20 rounded-2xl p-6 h-full">
 
-      <div className="flex justify-between items-center">
+      <div className="flex gap-4 flex-wrap-reverse justify-between items-center">
         <EventFilters
           selectedStatus={statusFilter}
           onStatusChange={setStatusFilter}
@@ -53,7 +54,7 @@ const EventPage = () => {
         />
         <button
           onClick={() => setShowModal(true)}
-          className="bg-primary-100 hover:bg-primary-90 text-white px-4 py-2 rounded-full text-sm font-medium"
+          className="bg-primary-100 hover:bg-primary-90 text-white px-4 py-2 rounded-full text-nowrap text-sm font-medium"
         >
           + Add Event
         </button>
@@ -84,8 +85,8 @@ const EventPage = () => {
       </div>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <h2 className="text-xl font-semibold mb-4">Add New Event</h2>
-        <p>Nothing to see here.</p>
+        <h2 className="text-xl font-semibold mb-4">Add New Event Draft</h2>
+         <AddEventForm onClose={() => setShowModal(false)} />
       </Modal>
     </section>
 

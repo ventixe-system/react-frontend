@@ -3,14 +3,14 @@ import { useState } from "react"
 {/* ChatGpt 4o helped a lot with writing this code. It filters the events based on status and category. */}
 
 const statuses = ["Active", "Draft", "Cancelled", "Past"]
-const categories= ["All", "Music", "Outdoor & Adventure", "Fashion", "Food & Culinary", "Art & Design", "Sports", "Technology", "Health & Wellness"]
+const categories= ["All Categories", "Music", "Outdoor & Adventure", "Fashion", "Food & Culinary", "Art & Design", "Sports", "Technology", "Health & Wellness"]
 
 const EventFilters = ({ selectedStatus, onStatusChange, selectedCategory, onCategoryChange }) => {
   return (
-    <div className="flex flex-wrap gap-4 justify-between items-center">
+    <div className="flex flex-wrap gap-2 justify-between items-center">
 
       {/* Status Filter Buttons*/}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-1">
         {statuses.map((status) => (
           <button
             key={status}
@@ -26,7 +26,7 @@ const EventFilters = ({ selectedStatus, onStatusChange, selectedCategory, onCate
       </div>
 
       {/* Category Filter Dropdown */}
-      <div className="ml-8">
+      <div>
         <select
           value={selectedCategory}
           onChange={(e) => onCategoryChange(e.target.value)}

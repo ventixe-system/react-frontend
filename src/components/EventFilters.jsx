@@ -10,7 +10,7 @@ const EventFilters = ({ selectedStatus, onStatusChange, selectedCategory, onCate
     useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://localhost:7028/api/categories");
+        const response = await fetch("category-service-app-g8bugcfhfadcb3dg.swedencentral-01.azurewebsites.net/api/categories");
         if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
         setCategories(["All Categories", ...data.map(c => c.name)]);

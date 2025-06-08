@@ -18,8 +18,8 @@ useEffect(() => {
   const fetchData = async () => {
     try {
       const [eventRes, categoryRes] = await Promise.all([
-        fetch("https://localhost:7182/api/events"),
-        fetch("https://localhost:7028/api/categories"),
+        fetch("event-service-app-h5hhaag4c2czezbj.swedencentral-01.azurewebsites.net/api/events"),
+        fetch("category-service-app-g8bugcfhfadcb3dg.swedencentral-01.azurewebsites.net/api/categories"),
       ]);
 
       if (!eventRes.ok || !categoryRes.ok) {

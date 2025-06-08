@@ -1,11 +1,27 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 {/* ChatGpt 4o helped a lot with writing this code. It filters the events based on status and category. */}
 
 const statuses = ["Active", "Draft", "Cancelled", "Past"]
-const categories= ["All Categories", "Music", "Outdoor & Adventure", "Fashion", "Food & Culinary", "Art & Design", "Sports", "Technology", "Health & Wellness"]
 
 const EventFilters = ({ selectedStatus, onStatusChange, selectedCategory, onCategoryChange }) => {
+  const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("https://localhost:7028/api/categories");
+        if (!response.ok) throw new Error("Failed to fetch categories");
+        const data = await response.json();
+        setCategories(["All Categories", ...data.map(c => c.name)]);
+      } catch (err) {
+        console.error("Error fetching categories:", err.message);
+      }
+      };
+      
+          fetchCategories();
+    }, []);
+  
   return (
     <div className="flex flex-wrap gap-2 justify-between items-center">
 

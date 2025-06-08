@@ -9,38 +9,51 @@ const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = React.useState("Active");
+  const [categories, setCategories] = useState([]);
   const [categoryFilter, setCategoryFilter] = React.useState("All Categories");
   const [fetchError, setFetchError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch("https://localhost:7182/api/events");
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const [eventRes, categoryRes] = await Promise.all([
+        fetch("https://localhost:7182/api/events"),
+        fetch("https://localhost:7028/api/categories"),
+      ]);
 
-        if (!response.ok) {
-          throw new Error("Server responded with an error.");
-        }
-
-        const data = await response.json();
-        setEvents(data);
-        setLoading(false);
-        setFetchError(null);
-      } catch (error) {
-        console.error("Error fetching events", error);
-        setFetchError("Failed to load events. Please try again later.");
-        setLoading(false);
+      if (!eventRes.ok || !categoryRes.ok) {
+        throw new Error("Failed to fetch data");
       }
-    };
 
-    fetchEvents();
-  }, []);
+      const [eventData, categoryData] = await Promise.all([
+        eventRes.json(),
+        categoryRes.json(),
+      ]);
 
-  const filteredEvents = events.filter(event => {
-    return event.status === statusFilter &&
-      (categoryFilter === "All Categories" || event.category === categoryFilter);
-  }
-  );
+      setEvents(eventData);
+      setCategories(categoryData);
+      setLoading(false);
+      setFetchError(null);
+    } catch (err) {
+      console.error(err);
+      setFetchError("Something went wrong while loading events.");
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
+  const getCategoryName = (id) => {
+  const found = categories.find((c) => c.id === id);
+  return found ? found.name : "Unknown";
+  };
+  
+  const filteredEvents = events.filter(event =>
+  event.status === statusFilter &&
+  (categoryFilter === "All Categories" || getCategoryName(event.categoryId)?.toLowerCase() === categoryFilter.toLowerCase())
+);
 
   return (
     <section className="grid grid-rows-[auto_1fr] bg-grey-20 rounded-2xl p-6 h-full">
@@ -73,8 +86,8 @@ const EventPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredEvents.length > 0 ? (
               filteredEvents.map((event, index) => (
-                <EventCard key={index} event={event} />
-              ))
+            <EventCard key={index} event={event} getCategoryName={getCategoryName} />
+    ))
             ) : (
               <p className="text-center text-base text-grey-60 col-span-full pt-12">
                 No events match your filters.

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddEventForm = ({ onClose }) => {
@@ -9,10 +9,26 @@ const AddEventForm = ({ onClose }) => {
   const [location, setLocation] = useState("");
   const [startingPrice, setStartingPrice] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("https://localhost:7028/api/categories");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      const data = await response.json();
+      setCategories(data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  fetchCategories();
+  }, []);
+  
     const validate = () => {
     const newErrors = {};
       if (!title.trim()) newErrors.title = "Title is required";
@@ -65,7 +81,6 @@ const handleSubmit = async (e) => {
   }
 };
 
-
   return (
     <form className="grid gap-4" onSubmit={handleSubmit}>
       <div>
@@ -111,7 +126,7 @@ const handleSubmit = async (e) => {
             time ? "text-grey-100" : "text-grey-60"
           }`}
         />
-        {errors.time && <p className="text-red-600 text-sm mt-1">{errors.time}</p>}
+        {errors.time && <p className="text-primary-90 text-sm mt-1">{errors.time}</p>}
       </div>
 
       <div>
@@ -122,7 +137,7 @@ const handleSubmit = async (e) => {
           placeholder="Location"
           className="p-2 border rounded-md bg-grey-10 text-grey-100 placeholder-grey-60 focus:outline-none focus:ring-2 focus:ring-primary-100 w-full"
         />
-        {errors.location && <p className="text-red-600 text-sm mt-1">{errors.location}</p>}
+        {errors.location && <p className="text-primary-90 text-sm mt-1">{errors.location}</p>}
       </div>
 
       <div>
@@ -140,16 +155,14 @@ const handleSubmit = async (e) => {
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          onFocus={() => setErrors((prev) => ({ ...prev, categoryId: null }))}
           className= "p-2 border rounded-md bg-grey-10 text-grey-100 focus:outline-none focus:ring-2 focus:ring-primary-100 w-full"
         >
-          <option value="" disabled>
-            --- Select Category ---
-          </option>
-          <option value="1">Music</option>
-          <option value="2">Tech</option>
-          <option value="3">Sports</option>
-          <option value="4">Business</option>
+          <option value="" disabled>--- Select Category ---</option>
+          {categories.map(c => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
         </select>
         {errors.categoryId && <p className="text-primary-90 text-sm mt-1">{errors.categoryId}</p>}
       </div>

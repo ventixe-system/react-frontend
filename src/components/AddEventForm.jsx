@@ -17,7 +17,7 @@ const AddEventForm = ({ onClose }) => {
   useEffect(() => {
   const fetchCategories = async () => {
     try {
-      const response = await fetch("category-service-app-g8bugcfhfadcb3dg.swedencentral-01.azurewebsites.net/api/categories");
+      const response = await fetch("https:/category-service-app-g8bugcfhfadcb3dg.swedencentral-01.azurewebsites.net/api/categories");
       if (!response.ok) throw new Error("Failed to fetch categories");
       const data = await response.json();
       setCategories(data);
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
   try {
     setSubmitting(true);
 
-    const response = await fetch("event-service-app-h5hhaag4c2czezbj.swedencentral-01.azurewebsites.net/api/events", {
+    const response = await fetch("https:/event-service-app-h5hhaag4c2czezbj.swedencentral-01.azurewebsites.net/api/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

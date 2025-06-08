@@ -1,6 +1,6 @@
 import EventCard from "../components/EventCard"
 import EventFilters from "../components/EventFilters";
-import React, { use } from "react"
+import React from "react"
 import { useEffect, useState } from "react";
 import Modal from "../components/ModalBase";
 import AddEventForm from "../components/AddEventForm";
@@ -9,7 +9,7 @@ const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = React.useState("Active");
-  const [categoryFilter, setCategoryFilter] = React.useState("All");
+  const [categoryFilter, setCategoryFilter] = React.useState("All Categories");
   const [fetchError, setFetchError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -85,7 +85,7 @@ const EventPage = () => {
       </div>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <h2 className="text-xl font-semibold mb-4">Add New Event Draft</h2>
+        <h2 className="text-xl font-semibold mb-4">Add New Event — Draft</h2>
          <AddEventForm onClose={() => setShowModal(false)} />
       </Modal>
     </section>
